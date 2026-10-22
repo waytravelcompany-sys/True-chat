@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101a32">
+  <meta name="description" content="TRUE CHAT — Discutez en privé avec vos proches.">
+  <title>TRUE CHAT</title>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div id="app">
+
+  <header>
+    <div class="brand">✦ TRUE <span>CHAT</span></div>
+    <button id="logout" type="button" hidden>Déconnexion</button>
+  </header>
+
+  <main>
+
+    <!-- AUTHENTIFICATION -->
+    <section id="auth" class="panel">
+      <h1>Bienvenue sur TRUE CHAT</h1>
+      <p>Discutez avec vos proches, simplement et en privé.</p>
+
+      <form id="authForm">
+        <label for="name">Nom complet</label>
+        <input
+          id="name"
+          type="text"
+          placeholder="Votre nom"
+          autocomplete="name"
+        >
+
+        <label for="username">Nom d'utilisateur</label>
+        <input
+          id="username"
+          type="text"
+          placeholder="Choisissez un nom d'utilisateur"
+          autocomplete="username"
+        >
+
+        <label for="email">Adresse e-mail</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="Votre adresse e-mail"
+          autocomplete="email"
+          required
+        >
+
+        <label for="password">Mot de passe</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="6 caractères minimum"
+          minlength="6"
+          autocomplete="current-password"
+          required
+        >
+
+        <button type="submit" id="authSubmit">
+          Se connecter
+        </button>
+      </form>
+
+      <button class="link" id="toggleAuth" type="button">
+        Créer un compte
+      </button>
+
+      <button class="link" id="forgotPassword" type="button">
+        Mot de passe oublié ?
+      </button>
+    </section>
+
+    <!-- APPLICATION PRINCIPALE -->
+    <section id="home" hidden>
+
+      <div class="toolbar">
+        <div>
+          <h2>TRUE CHAT</h2>
+          <p id="welcomeUser">Bienvenue</p>
+        </div>
+
+        <button id="refresh" type="button" aria-label="Actualiser">
+          ↻
+        </button>
+      </div>
+
+      <!-- PROFIL -->
+      <section class="panel" id="profilePanel">
+        <h3>Mon profil</h3>
+
+        <div id="myProfile"></div>
+
+        <button id="editProfile" type="button">
+          Modifier mon profil
+        </button>
+      </section>
+
+      <!-- RECHERCHE -->
+      <section class="panel" id="searchPanel">
+        <h3>Rechercher une personne</h3>
+
+        <form id="searchForm">
+          <input
+            id="findEmail"
+            type="text"
+            placeholder="Email ou nom d'utilisateur"
+            autocomplete="off"
+          >
+
+          <button id="findUser" type="submit">
+            Rechercher
+          </button>
+        </form>
+
+        <div id="found"></div>
+      </section>
+
+      <!-- NOUVEAU GROUPE -->
+      <section class="panel" id="groupPanel">
+        <h3>Conversations</h3>
+
+        <button id="newGroup" type="button">
+          ＋ Créer un groupe
+        </button>
+
+        <button id="newConversation" type="button">
+          ＋ Nouvelle conversation
+        </button>
+      </section>
+
+      <!-- LISTE DES CONVERSATIONS -->
+      <section id="chatSection">
+        <h3>Messages</h3>
+        <div id="chats" class="list"></div>
+      </section>
+
+      <!-- STATUTS -->
+      <section id="statusSection" class="panel" hidden>
+        <h3>Statuts</h3>
+
+        <form id="statusForm">
+          <label for="statusText">Partager un statut</label>
+          <textarea
+            id="statusText"
+            placeholder="Quoi de neuf ?"
+          ></textarea>
+
+          <label for="statusMedia">
+            Ajouter une photo ou une vidéo
+          </label>
+
+          <input
+            id="statusMedia"
+            type="file"
+            accept="image/*,video/*"
+          >
+
+          <button type="submit">Publier le statut</button>
+        </form>
+
+        <div id="statuses"></div>
+      </section>
+
+      <!-- APPELS -->
+      <section id="callsSection" class="panel" hidden>
+        <h3>Appels</h3>
+
+        <div id="callsList"></div>
+
+        <p>
+          Les appels audio et vidéo nécessitent une connexion sécurisée,
+          WebRTC et un système de signalisation.
+        </p>
+      </section>
+
+      <!-- CONTACTS -->
+      <section id="contactsSection" class="panel" hidden>
+        <h3>Mes contacts</h3>
+        <div id="contactsList"></div>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section id="notificationsSection" class="panel" hidden>
+        <h3>Notifications</h3>
+        <div id="notificationsList"></div>
+      </section>
+
+      <!-- PARAMÈTRES -->
+      <section id="settingsSection" class="panel" hidden>
+        <h3>Réglages</h3>
+
+        <button id="settingsProfile" type="button">
+          Mon profil
+        </button>
+
+        <button id="settingsPrivacy" type="button">
+          Confidentialité et sécurité
+        </button>
+
+        <button id="settingsBlocked" type="button">
+          Utilisateurs bloqués
+        </button>
+
+        <button id="settingsNotifications" type="button">
+          Notifications
+        </button>
+
+        <button id="settingsStorage" type="button">
+          Stockage et médias
+        </button>
+
+        <div id="settingsContent"></div>
+      </section>
+
+      <!-- NAVIGATION -->
+      <nav aria-label="Navigation principale">
+        <button type="button" data-tab="chats" class="active">
+          💬 Chats
+        </button>
+
+        <button type="button" data-tab="status">
+          🟢 Statuts
+        </button>
+
+        <button type="button" data-tab="calls">
+          📞 Appels
+        </button>
+
+        <button type="button" data-tab="contacts">
+          👥 Contacts
+        </button>
+
+        <button type="button" data-tab="settings">
+          ⚙️ Réglages
+        </button>
+      </nav>
+
+    </section>
+
+    <!-- CONVERSATION -->
+    <section id="room" hidden>
+
+      <div class="toolbar">
+        <button id="back" type="button">‹ Retour</button>
+        <h2 id="roomTitle">Conversation</h2>
+        <button id="roomMenu" type="button" aria-label="Options">
+          ⋮
+        </button>
+      </div>
+
+      <div id="roomInfo"></div>
+
+      <!-- MESSAGES -->
+      <div id="messages" aria-live="polite"></div>
+
+      <div id="typingIndicator" hidden>
+        En train d'écrire…
+      </div>
+
+      <!-- FICHIER SÉLECTIONNÉ -->
+      <div id="selectedFile"></div>
+
+      <!-- ENVOI -->
+      <form id="sendForm" class="composer">
+
+        <label class="filebtn" title="Ajouter une photo ou vidéo">
+          ＋
+          <input
+            id="attachment"
+            type="file"
+            accept="image/*,video/*,audio/*"
+            hidden
+          >
+        </label>
+
+        <input
+          id="messageText"
+          type="text"
+          placeholder="Message..."
+          autocomplete="off"
+        >
+
+        <button type="submit" aria-label="Envoyer">
+          ➤
+        </button>
+      </form>
+
+      <div id="mediaPreview"></div>
+
+    </section>
+
+    <!-- NOTIFICATIONS D'ERREUR OU DE SUCCÈS -->
+    <p id="notice" role="status" aria-live="polite"></p>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
